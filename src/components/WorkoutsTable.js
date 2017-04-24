@@ -4,25 +4,29 @@ import WorkoutRegistry from './WorkoutRegistry';
 
 const WorkoutsTable = ({ registries }) => (
   <table>
-    <tr>
-      <th>Tempo</th>
-      <th>Tipo</th>
-      <th>Data</th>
-      <th></th>
-    </tr>
+    <thead>
+      <tr>
+        <th>Tempo</th>
+        <th>Tipo</th>
+        <th>Data</th>
+        <th></th>
+      </tr>
+    </thead>
 
-    {registries.map(registry =>
-      <WorkoutRegistry duration={registry.duration}
-        activity={registry.activity} date={registry.date} />
-    )}
+    <tbody>
+      {registries.map((registry, index) =>
+        <WorkoutRegistry key={`registry-row-${index}`} duration={registry.duration}
+          activity={registry.activity} date={registry.date} />
+      )}
+    </tbody>
   </table>
 );
 
 WorkoutsTable.propTypes = {
   registries: PropTypes.arrayOf(PropTypes.shape({
-    duration: PropTypes.number.isRequired,
+    duration: PropTypes.string.isRequired,
     activity: PropTypes.string.isRequired,
-    date:     PropTypes.string.isRequired,
+    date: PropTypes.string.isRequired,
   }).isRequired).isRequired,
 };
 

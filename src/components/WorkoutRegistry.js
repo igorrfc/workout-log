@@ -10,7 +10,7 @@ const WorkoutRegistry = ({ duration, activity, date }) => (
 );
 
 WorkoutRegistry.propTypes = {
-  duration: PropTypes.number.isRequired,
+  duration: PropTypes.string.isRequired,
   activity: PropTypes.string.isRequired,
 };
 
