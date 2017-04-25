@@ -2,7 +2,7 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import MaskedInput from 'react-text-mask';
 
-import { validateForm } from '../validations/workoutForm';
+import { validateForm, bindValidateFormCallback } from '../validations/workoutForm';
 
 const ACTIVITIES = [
   {
@@ -15,11 +15,22 @@ const ACTIVITIES = [
   },
 ];
 
-const handleChange = (updateFormField) => (event) => updateFormField(event.target.name, event.target.value);
+const handleChange = (updateFormField, cb = null) =>
+  (event) => updateFormField(event.target.name, event.target.value, cb);
 
-const onSubmit = (component, addWorkout, form) => {
-  if (validateForm(component, form)) {
-    addWorkout(form);
+const onSubmit = (component, addWorkout, form, registries, validateFormFields) => {
+  const { date, duration } = form;
+  const validation = bindValidateFormCallback(registries, form, validateForm);
+
+  if (date.isValid && duration.isValid) {
+    const { duration, date, activity } = form;
+    addWorkout({
+      duration: duration.value,
+      date: date.value,
+      activity: activity.value,
+    });
+  } else {
+    validateFormFields(form, validation);
   }
 };
 
@@ -35,7 +46,7 @@ class WorkoutForm extends React.Component {
   };
 
   render() {
-    const { form, updateFormField, addWorkout, registries } = this.props;
+    const { form, updateFormField, addWorkout, registries, validateFormFields } = this.props;
 
     return (
       <form action='javascript:void(0);'>
@@ -44,14 +55,18 @@ class WorkoutForm extends React.Component {
           type={'text'}
           name={'duration'}
           onChange={handleChange(updateFormField)}
-          value={form.duration}
+          onBlur={handleChange(updateFormField, validateForm.duration(registries, form))}
+          value={form.duration.value}
         />
-        <span>{ this.state.errors.duration }</span>
+        <span>{form.duration.error}</span>
 
         <label htmlFor='activity'>Atividade realizada: </label>
-        <select name='activity' onChange={handleChange(updateFormField)} value={form.activity} >
+        <select name='activity' onChange={handleChange(updateFormField)} value={form.activity.value}>
           {ACTIVITIES.map((activity, index) =>
-            <option key={`activity-option-${index}`} value={activity.value}>{activity.name}</option>
+            <option
+              key={`activity-option-${index}`}
+              value={activity.value}>{activity.name}
+            </option>
           )}
         </select>
 
@@ -60,11 +75,16 @@ class WorkoutForm extends React.Component {
           type='text'
           name='date'
           onChange={handleChange(updateFormField)}
-          value={form.date}
+          onBlur={handleChange(updateFormField, validateForm.date)}
+          value={form.date.value}
         />
-        <span>{ this.state.errors.date }</span>
+        <span>{form.date.error}</span>
 
-        <input type='submit' value='Add' onClick={ () => onSubmit(this, addWorkout, form) } />
+        <input
+          type='submit'
+          value='Add'
+          onClick={ () => onSubmit(this, addWorkout, form, registries, validateFormFields) }
+        />
       </form>
     );
   }
