@@ -10,8 +10,15 @@ import * as actions from '../actions';
 
 const WorkoutLog = ({ form, registries, addWorkout, updateFormField }) => (
   <div>
-    <WorkoutForm form={ form } addWorkout={ addWorkout } updateFormField={ updateFormField } />
+    <WorkoutForm
+      form={ form }
+      addWorkout={ addWorkout }
+      updateFormField={ updateFormField }
+      registries={ registries }
+    />
+
     <WorkoutsTable registries={ registries }  />
+
     <WorkoutAverageTime />
   </div>
 );
