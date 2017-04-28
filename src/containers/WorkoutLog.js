@@ -8,13 +8,14 @@ import WorkoutAverageTime from '../components/WorkoutAverageTime';
 
 import * as actions from '../actions';
 
-const WorkoutLog = ({ form, registries, addWorkout, updateFormField }) => (
+const WorkoutLog = ({ form, registries, addWorkout, updateFormField, validateFormFields }) => (
   <div>
     <WorkoutForm
       form={ form }
       addWorkout={ addWorkout }
       updateFormField={ updateFormField }
       registries={ registries }
+      validateFormFields={ validateFormFields }
     />
 
     <WorkoutsTable registries={ registries }  />
