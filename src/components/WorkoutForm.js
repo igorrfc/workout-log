@@ -34,61 +34,45 @@ const onSubmit = (component, addWorkout, form, registries, validateFormFields) =
   }
 };
 
-class WorkoutForm extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      errors: {
-        duration: '',
-        date: '',
-      },
-    };
-  };
+const WorkoutForm = ({ form, updateFormField, addWorkout, registries, validateFormFields }) => (
+  <form action='javascript:void(0);'>
+    <label htmlFor='duration'>Duração: </label>
+    <input
+      type={'text'}
+      name={'duration'}
+      onChange={handleChange(updateFormField)}
+      onBlur={handleChange(updateFormField, validateForm.duration(registries, form))}
+      value={form.duration.value}
+    />
+    <span>{form.duration.error}</span>
 
-  render() {
-    const { form, updateFormField, addWorkout, registries, validateFormFields } = this.props;
+    <label htmlFor='activity'>Atividade realizada: </label>
+    <select name='activity' onChange={handleChange(updateFormField)} value={form.activity.value}>
+      {ACTIVITIES.map((activity, index) =>
+        <option
+          key={`activity-option-${index}`}
+          value={activity.value}>{activity.name}
+        </option>
+      )}
+    </select>
 
-    return (
-      <form action='javascript:void(0);'>
-        <label htmlFor='duration'>Duração: </label>
-        <input
-          type={'text'}
-          name={'duration'}
-          onChange={handleChange(updateFormField)}
-          onBlur={handleChange(updateFormField, validateForm.duration(registries, form))}
-          value={form.duration.value}
-        />
-        <span>{form.duration.error}</span>
+    <label htmlFor='date'>Data: </label>
+    <input
+      type='text'
+      name='date'
+      onChange={handleChange(updateFormField)}
+      onBlur={handleChange(updateFormField, validateForm.date)}
+      value={form.date.value}
+    />
+    <span>{form.date.error}</span>
 
-        <label htmlFor='activity'>Atividade realizada: </label>
-        <select name='activity' onChange={handleChange(updateFormField)} value={form.activity.value}>
-          {ACTIVITIES.map((activity, index) =>
-            <option
-              key={`activity-option-${index}`}
-              value={activity.value}>{activity.name}
-            </option>
-          )}
-        </select>
-
-        <label htmlFor='date'>Data: </label>
-        <input
-          type='text'
-          name='date'
-          onChange={handleChange(updateFormField)}
-          onBlur={handleChange(updateFormField, validateForm.date)}
-          value={form.date.value}
-        />
-        <span>{form.date.error}</span>
-
-        <input
-          type='submit'
-          value='Add'
-          onClick={ () => onSubmit(this, addWorkout, form, registries, validateFormFields) }
-        />
-      </form>
-    );
-  }
-}
+    <input
+      type='submit'
+      value='Add'
+      onClick={ () => onSubmit(this, addWorkout, form, registries, validateFormFields) }
+    />
+  </form>
+)
 
 WorkoutForm.propTypes = {
   form: PropTypes.object.isRequired,
