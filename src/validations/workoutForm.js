@@ -1,8 +1,19 @@
 import moment from 'moment';
-import _ from 'lodash';
 
 import { filterByDate, isAfterCurrentDate } from '../queries/date';
 import { totalWorkoutsDuration } from '../queries/workoutLog';
+
+const isEmptyMaskValue = (value) => value.includes('_');
+
+export const hasErrors = (fields) => {
+  for (let field of fields) {
+    if (field.error) {
+      return true;
+    }
+  }
+
+  return false;
+};
 
 export const bindValidateFormCallback = (registries, form, obj) => ({
   date: obj.date,
@@ -11,8 +22,14 @@ export const bindValidateFormCallback = (registries, form, obj) => ({
 
 export const validateForm = {
   date: (value) => {
-    if (value === '') {
+    let date = moment(value);
+
+    if (value === '' || isEmptyMaskValue(value)) {
       return 'Campo obrigatório';
+    }
+
+    if (!date.isValid()) {
+      return 'Data inválida';
     }
 
     if (isAfterCurrentDate(value)) {
@@ -27,7 +44,8 @@ export const validateForm = {
     const workoutAmount = moment.duration(value).asHours() + totalWorkoutsDuration(
       filterByDate(registries, form.date.value)
     );
-    if (value === '') {
+
+    if (value === '' || isEmptyMaskValue(value)) {
       return 'Campo obrigatório';
     }
 
