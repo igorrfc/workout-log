@@ -2,7 +2,8 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import MaskedInput from 'react-masked-field';
 
-import { validateForm, bindValidateFormCallback } from '../validations/workoutForm';
+import { standardizeDate } from '../decorators/date';
+import { validateForm, bindValidateFormCallback, hasErrors } from '../validations/workoutForm';
 
 const ACTIVITIES = [
   {
@@ -16,32 +17,38 @@ const ACTIVITIES = [
 ];
 
 const handleChange = (updateFormField, cb = null) =>
-  (event) => updateFormField(event.target.name, event.target.value, cb);
+  (event) => {
+    if (event.target.name === 'date') {
+      return updateFormField(event.target.name, standardizeDate(event.target.value), cb);
+    }
+
+    return updateFormField(event.target.name, event.target.value, cb);
+  };
 
 const onSubmit = (component, addWorkout, form, registries, validateFormFields) => {
   const { date, duration } = form;
   const validation = bindValidateFormCallback(registries, form, validateForm);
+  const errors = validateFormFields(form, validation).validations;
 
-  if (date.isValid && duration.isValid) {
+  if (!hasErrors(errors)) {
     const { duration, date, activity } = form;
     addWorkout({
       duration: duration.value,
       date: date.value,
       activity: activity.value,
     });
-  } else {
-    validateFormFields(form, validation);
   }
 };
 
 const WorkoutForm = ({ form, updateFormField, addWorkout, registries, validateFormFields }) => (
   <form action='javascript:void(0);'>
     <label htmlFor='duration'>Duração: </label>
-    <input
+    <MaskedInput
       type={'text'}
       name={'duration'}
       onChange={handleChange(updateFormField)}
       onBlur={handleChange(updateFormField, validateForm.duration(registries, form))}
+      mask='99:99:99'
       value={form.duration.value}
     />
     <span>{form.duration.error}</span>
@@ -57,7 +64,7 @@ const WorkoutForm = ({ form, updateFormField, addWorkout, registries, validateFo
     </select>
 
     <label htmlFor='date'>Data: </label>
-    <input
+    <MaskedInput
       type='text'
       name='date'
       onChange={handleChange(updateFormField)}
@@ -73,7 +80,7 @@ const WorkoutForm = ({ form, updateFormField, addWorkout, registries, validateFo
       onClick={ () => onSubmit(this, addWorkout, form, registries, validateFormFields) }
     />
   </form>
-)
+);
 
 WorkoutForm.propTypes = {
   form: PropTypes.object.isRequired,
