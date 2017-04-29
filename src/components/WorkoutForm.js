@@ -1,6 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import MaskedInput from 'react-text-mask';
+import MaskedInput from 'react-masked-field';
 
 import { validateForm, bindValidateFormCallback } from '../validations/workoutForm';
 
@@ -62,6 +62,7 @@ const WorkoutForm = ({ form, updateFormField, addWorkout, registries, validateFo
       name='date'
       onChange={handleChange(updateFormField)}
       onBlur={handleChange(updateFormField, validateForm.date)}
+      mask='99/99/9999'
       value={form.date.value}
     />
     <span>{form.date.error}</span>
