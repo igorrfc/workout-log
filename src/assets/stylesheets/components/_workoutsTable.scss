@@ -1,0 +1,12 @@
+.workouts-table {
+  thead, tbody tr {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+  }
+  tbody {
+    display: block;
+    height: 105px;
+    overflow: auto;
+  }
+}
