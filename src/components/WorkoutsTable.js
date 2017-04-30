@@ -5,13 +5,12 @@ import WorkoutRegistry from './WorkoutRegistry';
 import { toBRFormat } from '../decorators/date';
 
 const WorkoutsTable = ({ registries }) => (
-  <table>
+  <table className={`table workouts-table`}>
     <thead>
       <tr>
         <th>Tempo</th>
         <th>Tipo</th>
         <th>Data</th>
-        <th></th>
       </tr>
     </thead>
 
