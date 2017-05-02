@@ -1,31 +1,15 @@
 import moment from 'moment';
+import { DATE_FORMAT } from '../decorators/date';
 
 /**
- * String format to work
+ * Get momentJS object from parameter date
  * @const
- * @name DATE_FORMAT
- */
-const DATE_FORMAT = 'DD-MM-YYYY';
-
-/**
- * Remove '/' from brazilian date string format
- * @const
- * @name formatDate
+ * @name toDate
  * @type Function
  * @param date {String} common brazilian string date dd/mm/yyyy
- * @return {String} brazilian string date with '-' instead of '/'
+ * @return {Object} momentJS object
  */
-export const formatDate = (date) => date.replace(/\//g, '-');
-
-/**
- * Format a brazilian date string without '/' to a new with ones
- * @const
- * @name dateFormatBR
- * @type Function
- * @param date {String} common brazilian string date dd/mm/yyyy
- * @return {String} brazilian string date with '-' instead of '/'
- */
-export const formatDateBR = (date) => date.replace(/-/g, '\/');
+export const toDate = (date) => moment(date);
 
 /**
  * Current date in string format
@@ -37,25 +21,6 @@ export const formatDateBR = (date) => date.replace(/-/g, '\/');
 export const getCurrentDateStr = () => moment().format(DATE_FORMAT);
 
 /**
- * Current date in common brazilian string format
- * @const
- * @name getCurrentDateStrBR
- * @type Function
- * @return {String} brazilian string current date
- */
-export const getCurrentDateStrBR = () => formatDateBR(getCurrentDateStrBR());
-
-/**
- * Get momentJS object from parameter date
- * @const
- * @name toDate
- * @type Function
- * @param date {String} common brazilian string date dd/mm/yyyy
- * @return {Object} momentJS object
- */
-export const toDate = (date) => moment(formatDate(date), DATE_FORMAT);
-
-/**
  * Current date in moment object format
  * @const
  * @name getToday
@@ -65,20 +30,7 @@ export const toDate = (date) => moment(formatDate(date), DATE_FORMAT);
 export const getToday = () => toDate(getCurrentDateStr());
 
 /**
- * Verify two dates if they are equals
- * @const
- * @name isEqualToCurrentDate
- * @type Function
- * @param date {String} common brazilian string date dd/mm/yyyy
- * @param targetDate {String} common brazilian string date dd/mm/yyyy
- * @return {Boolean}
- */
-export const isEqualToCurrentDate = (date, targetDate = getCurrentDateStrBR()) => (
-  formatDate(date) === formatDate(targetDate)
-);
-
-/**
- * Verify if parameter date is after today
+ * Verify if the date parameter is after today
  * @const
  * @name isAfterCurrentDate
  * @type Function
@@ -86,6 +38,20 @@ export const isEqualToCurrentDate = (date, targetDate = getCurrentDateStrBR()) =
  * @return {Boolean}
  */
 export const isAfterCurrentDate = (date) => toDate(date).isAfter(getToday());
+
+/**
+ * Verify two dates if they are equals
+ * @const
+ * @name isEqualToCurrentDate
+ * @type Function
+ * @param date {String} common string date on universal format YYYY-MM-DD
+ * @param targetDate {String} common string date on universal format YYYY-MM-DD
+   as the current date by default
+ * @return {Boolean}
+ */
+export const isEqualToCurrentDate = (date, targetDate = getCurrentDateStr()) => (
+  date === targetDate
+);
 
 /**
  * Filter array of elements by it dates
@@ -96,5 +62,5 @@ export const isAfterCurrentDate = (date) => toDate(date).isAfter(getToday());
  * @param date {String} common brazilian string date dd/mm/yyyy
  * @return {Boolean}
  */
-export const filterByDate = (registries, date = getCurrentDateStrBR()) =>
+export const filterByDate = (registries, date = getCurrentDateStr()) =>
   registries.filter((registry) => isEqualToCurrentDate(registry.date, date));

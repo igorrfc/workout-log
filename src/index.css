@@ -1,5 +1,69 @@
+h1,
+h2,
+h3,
+h4,
+p,
+th,
+span,
+label {
+  color: #867b7b; }
+
+h1 {
+  font-weight: bold;
+  font-size: 2rem; }
+
+span.error {
+  color: #e05968; }
+
+.bold {
+  font-weight: bold; }
+
+.marg-bottom-10 {
+  margin-bottom: 10px; }
+
+.marg-bottom-20 {
+  margin-bottom: 20px; }
+
+.marg-bottom-40 {
+  margin-bottom: 40px; }
+
+.marg-top-20 {
+  margin-top: 20px; }
+
+.form-control {
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s; }
+  .form-control:focus {
+    border-color: #bde471; }
+
+select {
+  height: 34px; }
+
+.btn.btn-success {
+  background-color: #79ca79;
+  border-color: #79ca79; }
+
+.workout-form {
+  background-color: #fdfdfd; }
+
+.workouts-table thead, .workouts-table tbody tr {
+  display: table;
+  table-layout: fixed;
+  width: 100%; }
+
+.workouts-table tbody {
+  display: block;
+  height: 105px;
+  overflow: auto; }
+
+.workout-log {
+  background-color: #fdfdfd;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px 0 #867b7b; }
+
+html,
 body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
-}
+  height: 100%;
+  margin: 0; }
+
+body {
+  background: linear-gradient(#bde471, #c2e284); }
